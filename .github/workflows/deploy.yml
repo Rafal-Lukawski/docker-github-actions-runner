@@ -44,7 +44,7 @@ jobs:
         run: |
           curl -fsSL https://goss.rocks/install | sh
           export PATH=$PATH:/usr/local/bin
-      - name: Get current Git SHA
+      - name: Get current Git SHA.
         id: vars
         run: echo "GIT_SHA=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       - name: set testable image environment variable
