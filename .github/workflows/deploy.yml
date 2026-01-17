@@ -31,7 +31,7 @@ jobs:
       - name: Copy Repo Files
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Get GitHub organization or user
-        run: echo 'ORG='$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
+        run: echo 'ORG=ghcr.io/'$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
         with:
@@ -39,7 +39,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
       - name: Copy Dockerfile
-        run: cp Dockerfile Dockerfile.ubuntu-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ghcr.io\/${ORG}\/github-runner-base:ubuntu-${{ matrix.release }}/" Dockerfile.ubuntu-${{ matrix.release }}
+        run: cp Dockerfile Dockerfile.ubuntu-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ${ORG}\/github-runner-base:ubuntu-${{ matrix.release }}/" Dockerfile.ubuntu-${{ matrix.release }}
       - name: Install Goss and dgoss
         run: |
           curl -fsSL https://goss.rocks/install | sh
@@ -142,7 +142,7 @@ jobs:
       - name: Copy Repo Files
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Get GitHub organization or user
-        run: echo 'ORG='$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
+        run: echo 'ORG=ghcr.io/'$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
         with:
@@ -150,7 +150,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
       - name: Copy Dockerfile
-        run: cp Dockerfile Dockerfile.debian-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ghcr.io\/${ORG}\/github-runner-base:debian-${{ matrix.release }}/" Dockerfile.debian-${{ matrix.release }}
+        run: cp Dockerfile Dockerfile.debian-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ${ORG}\/github-runner-base:debian-${{ matrix.release }}/" Dockerfile.debian-${{ matrix.release }}
       - name: Install Goss and dgoss
         run: |
           curl -fsSL https://goss.rocks/install | sh
@@ -243,13 +243,13 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write    
+      packages: write
     needs: ubuntu_tests
     steps:
       - name: Copy Repo Files
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Get GitHub organization or user
-        run: echo 'ORG='$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
+        run: echo 'ORG=ghcr.io/'$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
         with:
@@ -257,7 +257,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
       - name: Update Dockerfile FROM org
-        run: sed -i.bak "s/FROM.*/FROM ghcr.io\/${ORG}\/github-runner-base:latest/" Dockerfile
+        run: sed -i.bak "s/FROM.*/FROM ${ORG}\/github-runner-base:latest/" Dockerfile
       - name: Login to DockerHub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
@@ -279,7 +279,6 @@ jobs:
               --file Dockerfile \
               --platform linux/amd64,linux/arm64 \
               --tag ${{ env.ORG }}/github-runner:latest \
-              --tag ghcr.io\/${{ github.repository }}:latest \
               --push \
               --pull \
               --cache-from type=gha \
@@ -300,7 +299,7 @@ jobs:
       - name: Copy Repo Files
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Get GitHub organization or user
-        run: echo 'ORG='$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
+        run: echo 'ORG=ghcr.io/'$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
         with:
@@ -308,7 +307,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
       - name: Copy Dockerfile
-        run: cp Dockerfile Dockerfile.ubuntu-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ghcr.io\/${ORG}\/github-runner-base:ubuntu-${{ matrix.release }}/" Dockerfile.ubuntu-${{ matrix.release }}
+        run: cp Dockerfile Dockerfile.ubuntu-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ${ORG}\/github-runner-base:ubuntu-${{ matrix.release }}/" Dockerfile.ubuntu-${{ matrix.release }}
       - name: Login to DockerHub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
@@ -330,7 +329,6 @@ jobs:
               --file Dockerfile.ubuntu-${{ matrix.release }} \
               --platform linux/amd64,linux/arm64 \
               --tag ${{ env.ORG }}/github-runner:ubuntu-${{ matrix.release }} \
-              --tag ghcr.io\/${{ github.repository }}:ubuntu-${{ matrix.release }} \
               --push \
               --pull \
               --cache-from type=gha \
@@ -341,7 +339,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      packages: write    
+      packages: write
     needs: debian_tests
     strategy:
       matrix:
@@ -351,7 +349,7 @@ jobs:
       - name: Copy Repo Files
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
       - name: Get GitHub organization or user
-        run: echo 'ORG='$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
+        run: echo 'ORG=ghcr.io/'$(echo $(dirname ${GITHUB_REPOSITORY}) | awk '{print tolower($0)}') >> $GITHUB_ENV
       - name: Set up QEMU
         uses: docker/setup-qemu-action@c7c53464625b32c7a7e944ae62b3e17d2b600130 # v3.7.0
         with:
@@ -359,7 +357,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
       - name: Copy Dockerfile
-        run: cp Dockerfile Dockerfile.debian-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ghcr.io\/${ORG}\/github-runner-base:debian-${{ matrix.release }}/" Dockerfile.debian-${{ matrix.release }}
+        run: cp Dockerfile Dockerfile.debian-${{ matrix.release }}; sed -i.bak "s/FROM.*/FROM ${ORG}\/github-runner-base:debian-${{ matrix.release }}/" Dockerfile.debian-${{ matrix.release }}
       - name: Login to DockerHub
         uses: docker/login-action@5e57cd118135c172c3672efd75eb46360885c0ef # v3.6.0
         with:
@@ -381,7 +379,6 @@ jobs:
               --file Dockerfile.debian-${{ matrix.release }} \
               --platform linux/amd64,linux/arm64 \
               --tag ${{ env.ORG }}/github-runner:debian-${{ matrix.release }} \
-              --tag ghcr.io\/${{ github.repository }}:debian-${{ matrix.release }} \
               --push \
               --pull \
               --cache-from type=gha \
