@@ -12,9 +12,9 @@ on:
     - cron: "0 22 * * *"
   workflow_dispatch:
 
-# concurrency:
-#   group: deploy-${{ github.ref }}
-#   cancel-in-progress: true
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
@@ -157,7 +157,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    # needs: ubuntu_base_tests
+    needs: ubuntu_base_tests
     steps:
       - name: Copy Repo Files
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6.0.1
@@ -201,7 +201,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    # needs: ubuntu_base_tests
+    needs: ubuntu_base_tests
     strategy:
       matrix:
         release: [jammy, noble]
@@ -251,7 +251,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-    # needs: debian_base_tests
+    needs: debian_base_tests
     strategy:
       matrix:
         release: [bookworm, trixie]
