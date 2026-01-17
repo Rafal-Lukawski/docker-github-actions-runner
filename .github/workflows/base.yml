@@ -147,6 +147,8 @@ jobs:
 
   ubuntu_base_latest_deploy:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     needs: ubuntu_base_tests
     steps:
       - name: Copy Repo Files
@@ -187,6 +189,8 @@ jobs:
               .
   ubuntu_base_deploy:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     needs: ubuntu_base_tests
     strategy:
       matrix:
@@ -233,6 +237,8 @@ jobs:
               .
   debian_base_deploy:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
     needs: debian_base_tests
     strategy:
       matrix:
